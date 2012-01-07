@@ -216,7 +216,9 @@ def addsitepackages(known_paths, sys_prefix=sys.prefix, exec_prefix=sys.exec_pre
             if sys.platform in ('os2emx', 'riscos') or _is_jython:
                 sitedirs = [os.path.join(prefix, "Lib", "site-packages")]
             elif _is_pypy:
-                sitedirs = [os.path.join(prefix, 'site-packages')]
+                sitedirs = [os.path.join(prefix, 'lib', 'pypy' + sys.version[:3], 'site-packages'),
+                            os.path.join(prefix, 'lib', 'pypy', 'dist-packages'),
+                            os.path.join(prefix, 'site-packages')]
             elif sys.platform == 'darwin' and prefix == sys_prefix:
 
                 if prefix.startswith("/System/Library/Frameworks/"): # Apple's Python
@@ -562,9 +564,9 @@ def virtual_install_main_packages():
             cpyver = '%d.%d' % sys.version_info[:2]
         else:
             cpyver = '%d.%d.%d' % sys.version_info[:3]
-        paths = [os.path.join(sys.real_prefix, 'lib_pypy'),
-                 os.path.join(sys.real_prefix, 'lib-python', 'modified-%s' % cpyver),
-                 os.path.join(sys.real_prefix, 'lib-python', cpyver)]
+        paths = [os.path.join(sys.real_prefix, 'lib', 'pypy', 'lib_pypy'),
+                 os.path.join(sys.real_prefix, 'lib', 'pypy', 'lib-python', 'modified-%s' % cpyver),
+                 os.path.join(sys.real_prefix, 'lib', 'pypy', 'lib-python', cpyver)]
         hardcoded_relative_dirs = paths[:] # for the special 'darwin' case below
         #
         # This is hardcoded in the Python executable, but relative to sys.prefix:
